@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>OSC Router</title>
+</head>
+
+<body>
+    <h1>List of presets:</h1>
+    {% for preset in presets: %}
+    <h2><a href="{{url_for('index', preset_name=preset)}}">{{preset}}</a></h2>
+    <hr/>
+    {% endfor %}
+
+</body>
+</html>

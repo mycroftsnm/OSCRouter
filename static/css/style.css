@@ -1,0 +1,144 @@
+eval.inline{
+  display: inline-block;
+  vertical-align:middle;
+  margin: 0px 20px 5px 20px;
+}
+
+
+
+.linea{
+    display:inline;
+
+
+}
+
+
+.preset_entry{
+    height:40px;
+    margin-left:20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    min-width: 15%;
+    text-align: center;
+}
+
+
+.add-btn{
+    margin: 0px 0px 0px 15px;
+    background-color:#3584e4;
+    border-color:#3584e4;
+    color:white;
+}
+
+.rm-btn{
+    background-color:#ed333b;
+    border-color:#ed333b;
+    color:white;
+}
+
+.save-btn{
+    float: right;
+    display: inline-block;
+    margin: 0px 20px 0px 0px;
+    background-color:#26a269;
+    border-color:#26a269;
+
+}
+
+
+.margin{
+    margin-left:10px;
+
+
+}
+
+.input_entry{
+    min-width:10%;
+    text-align: center;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+    height:30px;
+    margin-top:5px;
+
+}
+
+.min_max{
+    margin-left: 5px;
+    margin-right: 5px;
+    min-width:5%;
+    display: inline;
+    height:30px;
+}
+
+
+
+
+.ca{
+    display: inline-block;
+    white-space: pre-line;
+    position: relative;
+    left:25%;
+}
+
+.argument_div{
+    position:fixed;
+    left:25%;
+    display: inline-block;
+}
+
+.entry{
+
+  height:30px;
+  width:20%;
+  margin-bottom: 5px;
+  margin-left : 15px;
+  min-width: 20px;
+  display: inline-block;
+  margin-top: 5px
+}
+
+.argument_entry{
+    text-align: center;
+    min-width:100px;
+    height:30px;
+    margin-left:15px;
+    margin-top:5px;
+
+}
+
+.selector{
+    height:35px;
+    margin-left:5px;
+    width: 7% !important;
+    text-align: center;
+    vertical-align: baseline;
+
+}
+.form-control{
+    display: inline-block;
+    height: 30px;
+}
+
+.active_header{
+    display: inline-block;
+    margin-left:20px;
+    height:40px;
+
+}
+
+.btn{
+
+    vertical-align: 5%;
+}
+
+#formu{
+
+   border-color:red;
+}
+
+.btn-warnisng{
+    margin-left:2%;
+    background-color:red;
+    border-color:red;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js', _external=True)}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/stretchy.js', _external=True)}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css', _external=True)}}">
+    <meta charset="UTF-8">
+    <title>OSC ROUTER</title>
+</head>
+
+<html>
+  <body <body style="background-color: #deddda;">
+
+    <form method="POST" name="formu" id="formu">
+
+        <input placeholder="Preset name"  name="preset_name" class="preset_entry" id="preset_name"></input>
+        <input placeholder="Listen ip" name="listen_ip" class="preset_entry" id="listen_ip"></input>
+        <input placeholder="Listen port" name="listen_port" class="preset_entry" id="listen_port"></input>
+        <input placeholder="Default Out ip" name="default_out_ip" class="preset_entry" id="default_out_ip"></input>
+        <input placeholder="Default Out port" name="default_out_port" class="preset_entry" id="default_out_port"></input>
+        <button type="button" onclick="window.location.href='{{ url_for( 'index1' ) }}';" class="btn btn-primary">preset list</button>
+    </form>
+    <div id="buttons">
+        <hr/>
+        <button onclick="myFunction()" class="btn btn-primary add-btn"> Preset + </button>
+        <button onclick="removeBind()" class="btn btn-danger rm-btn"> - </button>
+        <button type="submit" form="formu" class="btn btn-success save-btn"> Save </button>
+    </div>
+  </body>
+</html>
