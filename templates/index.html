@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js', _external=True)}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/stretchy.js', _external=True)}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css', _external=True)}}">
+    <meta charset="UTF-8">
+    <title>OSC ROUTER</title>
+</head>
+
+<html>
+  <body>
+
+    <form method="POST" name="formu" id="formu" class="formu">
+        <button type="button" onclick="window.location.href='{{ url_for( 'index1' ) }}';" class="btn btn-warning"><-</button>
+        <input placeholder="Preset name"  name="preset_name" class="preset_entry" id="preset_name"></input>
+        <input placeholder="Listen ip" name="listen_ip" class="preset_entry" id="listen_ip"></input>
+        <input placeholder="Listen port" name="listen_port" class="preset_entry" id="listen_port"></input>
+        <input placeholder="Default Out ip" name="default_out_ip" class="preset_entry" id="default_out_ip"></input>
+        <input placeholder="Default Out port" name="default_out_port" class="preset_entry" id="default_out_port"></input>
+
+    </form>
+    <div id="buttons">
+        <hr/>
+        <button onclick="myFunction()" class="btn btn-primary add-btn"> Preset + </button>
+        <button onclick="removeBind()" class="btn btn-danger"> - </button>
+        <button type="submit" form="formu" class="btn btn-success save-btn"> Save </button>
+    </div>
+
+    {% if presets[0].last == True: %}
+        <script>
+            active_header = document.createElement("h3");
+            active_header.classList.add("active_header");
+            active_tag = document.createElement("label");
+            active_tag.innerHTML= "ACTIVE PRESET";
+            active_tag.classList.add("badge-success", "badge");
+            active_header.appendChild(active_tag);
+            document.getElementById('formu').appendChild(active_header);
+        </script>
+    {% endif %}
+
+    {% for preset in presets: %}
+        {% set preset_number = loop.index %}
+
+        <script>autofill( "{{preset.preset_name}}", "{{preset.listen_ip}}", "{{preset.listen_port}}",
+        "{{preset.out_ip}}", "{{preset.out_port}}","{{preset.default_out_ip}}", "{{preset.default_out_port}}",
+        {{preset_number}}, "{{preset.name}}", "{{preset.in_address}}", "{{preset.in_min}}", "{{preset.in_max}}",
+        "{{preset.out_address}}" )</script>
+
+        {% set bundles = Osc_bundle.query.filter_by(router_id=preset.id).all() %}
+        {% for bundle in bundles: %}
+            {% set argument_number = loop.index %}
+            <script>
+                fill_argument({{preset_number}}, {{ argument_number }}, "{{ bundle.argument }}");
+            </script>
+        {% endfor %}
+    {% endfor %}
+
+  </body>
+</html>
+
