@@ -172,7 +172,7 @@ if __name__ == '__main__':
 
                 for bundle in bundles:
 
-                    lst = str(bundle.msg).split(",")
+                    lst = str(bundle.argument).split(",")
                     count = len(lst)
 
                     if count == 3:
