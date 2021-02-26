@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from pythonosc.dispatcher import Dispatcher
 from pythonosc import osc_server
 from pythonosc import osc_message_builder
@@ -134,7 +135,7 @@ def index(preset_name=''):
 
 
 def web():
-    app.run('192.168.0.5', 5000)
+    app.run('0.0.0.0', 5000)
 
 
 if __name__ == '__main__':
@@ -164,7 +165,7 @@ if __name__ == '__main__':
         for bind in preset:
 
             def send(address, args, *in_messages):
-
+                print(in_messages[0])
                 bind = args[0]
                 print(bind.in_address)
                 msg = osc_message_builder.OscMessageBuilder(address=bind.out_address)
@@ -185,7 +186,7 @@ if __name__ == '__main__':
                     else:
                         print("ERROR: osc syntax")
                         break
-
+                    
                     if argument_type == 'i':
                         min_value = int(min_value)
                         max_value = int(max_value)
@@ -201,11 +202,13 @@ if __name__ == '__main__':
                         valor = min_value
 
                     else:
-                        valor = 0
-                    #   valor = (((float(max_value)-float(min_value))/preset[i].in_max)*in_messages[0])+float(min_value)
-                    #  print(valor)
+                        if argument_type != 's':
+                            valor = (((max_value-min_value)/(bind.in_max-bind.in_min))*(float(in_messages[0])-bind
+                                                                                        .in_min)) + min_value
+                        else:
+                            valor = max_value
 
-                    msg.add_arg(valor, arg_type=argument_type)
+                    msg.add_arg(valor)
 
                 msg = msg.build()
                 if bind.out_ip:
@@ -224,7 +227,6 @@ if __name__ == '__main__':
             mapped[quantity].append(map)
             quantity += 1
 
-        print(mapped)
 
     def reload(address, *in_messages):
         print('reload')
