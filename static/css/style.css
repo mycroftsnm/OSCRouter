@@ -1,16 +1,3 @@
-eval.inline{
-  display: inline-block;
-  vertical-align:middle;
-  margin: 0px 20px 5px 20px;
-}
-
-
-
-.linea{
-    display:inline;
-
-
-}
 
 
 .preset_entry{
@@ -45,99 +32,62 @@ eval.inline{
 
 }
 
-
-.margin{
-    margin-left:10px;
-
+.container{
+    display: inline-flex;
+    position: absolute;
+    left: 43%;
+    width: 55%;
+    overflow-inline: auto;
 
 }
 
-.input_entry{
-    min-width:10%;
-    text-align: center;
-    display: inline-block;
-    margin-left: 5px;
-    margin-right: 5px;
-    height:30px;
-    margin-top:5px;
-
+.remove_bind{
+    float : right;
 }
 
 .min_max{
-    margin-left: 5px;
-    margin-right: 5px;
-    min-width:5%;
-    display: inline;
-    height:30px;
+    width: 5%;
+    min-width: 5%;
 }
 
-
-
-
-.ca{
-    display: inline-block;
-    white-space: pre-line;
-    position: relative;
-    left:25%;
+.ip{
+    min-width: 10%;
+    width: 10%;
 }
 
-.argument_div{
-    left:25%;
-    display: inline-block;
-}
-
-.entry{
-
-  height:30px;
-  width:20%;
-  margin-bottom: 5px;
-  margin-left : 15px;
-  min-width: 20px;
-  display: inline-block;
-  margin-top: 5px
-}
-
-.argument_entry{
-    text-align: center;
-    min-width:100px;
-    height:30px;
-    margin-left:15px;
-    margin-top:5px;
-
+.port{
+    min-width: 5%;
+    width: 5%;
+    margin-left: 0.5%;
 }
 
 .selector{
-    height:35px;
-    margin-left:5px;
-    width: 7% !important;
-    text-align: center;
-    vertical-align: baseline;
-
-}
-.form-control{
-    display: inline-block;
-    height: 30px;
+    min-width: 5%;
+    width: 5%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
 }
 
-.active_header{
-    display: inline-block;
-    margin-left:20px;
-    height:40px;
-
+.out_address{
+    width: 15%;
+    min-width: 15%;
+    margin-left: 0.5%;
 }
 
-.btn{
-
-    vertical-align: 5%;
+.box{
+    border: 1px solid black;
+    display:flex;
+    margin-left: 1px;
+    border-radius: 5px;
 }
 
-#formu{
-
-   border-color:red;
+.name{
+    min-width: 15%;
+    width: 15%;
+    margin-left: 0.5%;
+    margin-right: 0.5%;
 }
 
-.btn-warnisng{
-    margin-left:2%;
-    background-color:red;
-    border-color:red;
+.line{
+    margin-bottom: 0.5%;
 }

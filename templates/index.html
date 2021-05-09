@@ -28,7 +28,7 @@
         <button type="submit" form="formu" class="btn btn-success save-btn"> Save </button>
     </div>
 
-    {% if presets[0].last == True: %}
+    {% if binds[0].last == True: %}
         <script>
             active_header = document.createElement("h3");
             active_header.classList.add("active_header");
@@ -40,21 +40,24 @@
         </script>
     {% endif %}
 
-    {% for preset in presets: %}
-        {% set preset_number = loop.index %}
+    {% for bind in binds: %}
+        {% set bind_number = loop.index %}
 
-        <script>autofill( "{{preset.preset_name}}", "{{preset.listen_ip}}", "{{preset.listen_port}}",
-        "{{preset.out_ip}}", "{{preset.out_port}}","{{preset.default_out_ip}}", "{{preset.default_out_port}}",
-        {{preset_number}}, "{{preset.name}}", "{{preset.in_address}}", "{{preset.in_min}}", "{{preset.in_max}}",
-        "{{preset.out_address}}" )</script>
+        <script>
+            filled_bind = new Bind( "{{bind_number-1}}");
 
-        {% set bundles = Osc_bundle.query.filter_by(router_id=preset.id).all() %}
+            filled_bind.autofill( "{{bind.name}}","{{bind.out_ip}}", "{{bind.out_port}}",
+            "{{bind.in_address}}", "{{bind.in_min}}", "{{bind.in_max}}",
+            "{{bind.out_address}}" )
+        </script>
+        {% set bundles = Osc_bundle.query.filter_by(router_id=bind.id).all() %}
         {% for bundle in bundles: %}
             {% set argument_number = loop.index %}
             <script>
-                fill_argument({{preset_number}}, {{ argument_number }}, "{{ bundle.argument }}");
+                filled_bind.autofill_args({{ argument_number -1}}, "{{ bundle.argument }}");
             </script>
         {% endfor %}
+
     {% endfor %}
 
   </body>

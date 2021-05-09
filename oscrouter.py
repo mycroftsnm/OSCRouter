@@ -20,6 +20,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+
 class Router(db.Model):
     __tablename__ = "routes"
     id = db.Column(db.Integer, primary_key=True)
@@ -80,12 +81,12 @@ def gotolist():
 @app.route('/preset/<preset_name>', methods=['GET', 'POST'])
 def index(preset_name=''):
     preset = Router.query.filter_by(preset_name=preset_name)
-    for x in preset.all():
-        print(x.name)
-    #bundle = Osc_bundle.query.filter_by(router_id=preset.id - 1).all()
+    # for x in preset.all():
+    # print(x.name)
+    # bundle = Osc_bundle.query.filter_by(router_id=preset.id - 1).all()
 
     if request.method == 'POST':
-        total = request.form['num']
+        total = request.form['bind_qty']
         last_preset_active = Router.query.filter_by(last=True).all()
         for bind in last_preset_active:
             bind.last = False
@@ -95,43 +96,43 @@ def index(preset_name=''):
                 OscBundle.query.filter_by(router_id=old_bind.id).delete()
             old_preset.delete()
 
-        for x in range(1, int(total)+1):
-
-            name = request.form['bind_name' + str(x)]
-            in_address = request.form['in_address' + str(x)]
-            min_in = request.form['min_in_value_name' + str(x)]
-            max_in = request.form['max_in_value_name' + str(x)]
-            out_address = request.form['out_address' + str(x)]
-            preset_name = request.form['preset_name']
-            listen_ip = request.form['listen_ip']
-            listen_port = request.form['listen_port']
-            bundle = request.form['cant' + str(x)]
-            out_ip = request.form['out_ip' + str(x)]
-            out_port = request.form['out_port' + str(x)]
-            default_out_ip = request.form['default_out_ip']
-            default_out_port = request.form['default_out_port']
-            new_post = Router(preset_name=preset_name, name=name, in_address=in_address, in_min=min_in, in_max=max_in,
-                              out_address=out_address, listen_ip=listen_ip, listen_port=listen_port, out_ip=out_ip,
-                              out_port=out_port, default_out_ip=default_out_ip, default_out_port=default_out_port,
-                              last=True)
-
-            db.session.add(new_post)
-            for y in range(1, int(bundle) + 1):
-                argument = request.form[str(x) + 'argument' + str(y)]
-                new = OscBundle(argument=argument)
-                db.session.add(new)
-                new_post.osc_bundle.append(new)
-        db.session.commit()
+        for x in range(0, int(total)):
+            name = request.form.get('bind_name' + str(x))
+            if name is not None:  # check if the bind has not been deleted
+                in_address = request.form['in_address' + str(x)]
+                min_in = request.form['min_in_value' + str(x)]
+                max_in = request.form['max_in_value' + str(x)]
+                out_address = request.form['out_address' + str(x)]
+                preset_name = request.form['preset_name']
+                listen_ip = request.form['listen_ip']
+                listen_port = request.form['listen_port']
+                bundle = request.form['arg_qty' + str(x)]
+                out_ip = request.form['out_ip' + str(x)]
+                out_port = request.form['out_port' + str(x)]
+                default_out_ip = request.form['default_out_ip']
+                default_out_port = request.form['default_out_port']
+                new_post = Router(preset_name=preset_name, name=name, in_address=in_address, in_min=min_in, in_max=max_in,
+                                  out_address=out_address, listen_ip=listen_ip, listen_port=listen_port, out_ip=out_ip,
+                                  out_port=out_port, default_out_ip=default_out_ip, default_out_port=default_out_port,
+                                  last=True)
+                db.session.add(new_post)
+                for y in range(0, int(bundle)):
+                    argument = request.form.get(str(x) + 'arg' + str(y))
+                    if argument is not None:
+                        new = OscBundle(argument=argument)
+                        db.session.add(new)
+                        new_post.osc_bundle.append(new)
+                db.session.commit()
         theserver = udp_client.SimpleUDPClient("127.0.0.1", 3722)
         theserver.send_message("/reloadoscserver", 1)
 
-            #options = {'page-size': 'A3'}
-            #url = render_template('index.html', presets=preset.all(), Osc_bundle=Osc_bundle)
-            #pdfkit.from_string(url, 'salidita2.pdf', options=options)
+        # options = {'page-size': 'A3'}
+        # url = render_template('index.html', presets=preset.all(), Osc_bundle=Osc_bundle)
+        # pdfkit.from_string(url, 'salidita2.pdf', options=options)
     if preset.first() is None:
         return render_template('new.html')
     else:
-        return render_template('index.html', presets=preset.all(), Osc_bundle=OscBundle)
+        return render_template('index.html', binds=preset.all(), Osc_bundle=OscBundle)
 
 
 def web():
@@ -143,6 +144,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='An OSC router.')
     parser.add_argument("-c", "--config", help="Runs the web server to configure router.", action="store_true")
     args = parser.parse_args()
+
+    # app.run(host='0.0.0.0', debug=True)
 
     t = threading.Thread(target=web)
     t.daemon = True
@@ -156,6 +159,7 @@ if __name__ == '__main__':
 
     dispatcher = Dispatcher()
     mapped = []
+
 
     def map_all():
         preset = Router.query.filter_by(last=True).all()
@@ -186,7 +190,7 @@ if __name__ == '__main__':
                     else:
                         print("ERROR: osc syntax")
                         break
-                    
+
                     if argument_type == 'i':
                         min_value = int(min_value)
                         max_value = int(max_value)
@@ -203,8 +207,9 @@ if __name__ == '__main__':
 
                     else:
                         if argument_type != 's':
-                            valor = (((max_value-min_value)/(bind.in_max-bind.in_min))*(float(in_messages[0])-bind
-                                                                                        .in_min)) + min_value
+                            valor = (((max_value - min_value) / (bind.in_max - bind.in_min)) * (
+                                        float(in_messages[0]) - bind
+                                        .in_min)) + min_value
                         else:
                             valor = max_value
 
@@ -221,6 +226,7 @@ if __name__ == '__main__':
                     port = bind.default_out_port
                 receptor = udp_client.SimpleUDPClient(ip, port)
                 receptor.send(msg)
+
             mapped.append([])
             map = dispatcher.map(bind.in_address, send, bind)
             mapped[quantity].append(bind.in_address)
@@ -240,9 +246,9 @@ if __name__ == '__main__':
         time.sleep(1)
         server.serve_forever()
 
+
     map_all()
     dispatcher.map('/reloadoscserver', reload)
     server = osc_server.ThreadingOSCUDPServer(("0.0.0.0", 3722), dispatcher)
     print("Serving on {}".format(server.server_address))
     server.serve_forever()
-

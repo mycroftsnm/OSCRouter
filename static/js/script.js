@@ -1,249 +1,181 @@
-var x=y=0;
+var x=0;
 var flag=0;
 var flag2=0;
 
 
 
+class Bind {
+  constructor(id) {
+    this.id = id;
+    this.arg_id = 0;
+    this.first_line = document.createElement("div");
+    this.first_line.classList.add("line");
+    this.second_line = document.createElement("div");
 
-function myFunction() {
-    if(!flag){
-      x++;
-      y++;
-      var  hr = document.createElement("HR");
+    this.arg_qty = document.createElement("input");
+    this.arg_qty.id = `arg_qty${this.id}`;
+    this.arg_qty.name = `arg_qty${this.id}`;
+    this.arg_qty.type = "hidden";
+    this.first_line.appendChild(this.arg_qty);
 
-      window[`line${x}`] = document.createElement("div");
-      window[`line${x}`].classList.add("margin");
-      window[`line${x}`].name = window[`line${x}`];
+    this.name = document.createElement("input");
+    this.name.id = `bind_name${this.id}`;
+    this.name.name = `bind_name${this.id}`;
+    this.name.placeholder = "Name";
+    this.name.classList.add("name");
 
-      window[`secondline${x}`] = document.createElement("div");
-      window[`secondline${x}`].classList.add("margin");
-      window[`secondline${x}`].id = `secondline${x}`;
+    this.out_ip = document.createElement("input");
+    this.out_ip.id = `out_ip${this.id}`;
+    this.out_ip.name = `out_ip${this.id}`;
+    this.out_ip.placeholder = "Out ip";
+    this.out_ip.classList.add("ip");
 
+    this.out_port = document.createElement("input");
+    this.out_port.id = `out_port${this.id}`;
+    this.out_port.name = `out_port${this.id}`;
+    this.out_port.placeholder = "Out port";
+    this.out_port.classList.add("port");
 
-      document.getElementById('formu').appendChild( window[`line${x}`]);
-      document.getElementById('formu').appendChild(window[`secondline${x}`]);
-
-      window[`line${x}`].appendChild(hr);
-
-      num = document.createElement("input");
-      num.name = "num";
-      num.id= "num_id";
-      num.type="hidden";
-
-      bind_name = document.createElement("input");
-      bind_name.placeholder = "Name";
-      bind_name.name = `bind_name${x}`;
-      bind_name.id = `bind_name${x}`;
-      bind_name.classList.add("input_entry")
-
-      in_address = document.createElement("input");
-      in_address.placeholder = "Input address";
-      in_address.classList.add("input_entry");
-      in_address.name = `in_address${x}`;
-      in_address.id = `in_address${x}`;
-
-      protocol =  document.createElement("select");
-      protocol.onchange= function(){ myFunction3()};
-      protocol.id = `protocol${x}`
-      midi = document.createElement("option");
-      osc = document.createElement("option");
-      midi.innerHTML = "MIDI";
-      osc.innerHTML = "OSC";
-      osc.value = 'osc';
-      midi.value = 'midi';
-
-      protocol.classList.add("selector");
-      protocol.add(midi);
-      protocol.add(osc);
-
-
-
-
-      min_in_value = document.createElement("input");
-      min_in_value.name = `min_in_value_name${x}`;
-      min_in_value.id = `min_in_value${x}`;
-      min_in_value.placeholder = "Min in";
-      min_in_value.type="number";
-      min_in_value.classList.add("min_max");
-
-      max_in_value = document.createElement("input");
-      max_in_value.name = `max_in_value_name${x}`;
-      max_in_value.id = `max_in_value${x}`;
-      max_in_value.placeholder = "Max in";
-      max_in_value.type="number";
-      max_in_value.classList.add("min_max");
-
-
-      window[`line${x}`].appendChild(num);
-      window[`line${x}`].appendChild(window['bind_name']);
-      window[`secondline${x}`].appendChild(in_address);
-      window[`secondline${x}`].appendChild(min_in_value);
-      window[`secondline${x}`].appendChild(max_in_value);
-
-
-
-      window[`line${x}`].appendChild(protocol);
-
-      arrow = document.createElement("label");
-      arrow.innerHTML= "&rarr;";
-      window[`secondline${x}`].appendChild(arrow);
-
-      flag=1;
-      flag2=0;
-
-
+    let remove_bind_btn = document.createElement("button");
+    remove_bind_btn.type = "button";
+    remove_bind_btn.innerHTML = "Remove Bind";
+    remove_bind_btn.classList.add("remove_bind");
+    remove_bind_btn.onclick = () => {
+        this.second_line.remove();
+        this.first_line.remove();
     }
-}
+    this.first_line.appendChild(document.createElement("hr"));
+    this.first_line.appendChild(remove_bind_btn);
+    this.first_line.appendChild(this.name);
+    this.first_line.appendChild(this.out_ip);
+    this.first_line.appendChild(this.out_port);
 
+    this.in_address = document.createElement("input");
+    this.in_address.id = `in_address${this.id}`;
+    this.in_address.name = `in_address${this.id}`;
+    this.in_address.placeholder = "In address";
+    this.in_address.classList.add("name");
 
+    this.min_in_value = document.createElement("input");
+    this.min_in_value.id = `min_in_value${this.id}`;
+    this.min_in_value.name = `min_in_value${this.id}`;
+    this.min_in_value.placeholder = "Min in";
+    this.min_in_value.type="number";
+    this.min_in_value.classList.add("min_max");
 
-function myFunction3(){
-    if(!flag2){
+    this.max_in_value = document.createElement("input");
+    this.max_in_value.id = `max_in_value${this.id}`;
+    this.max_in_value.name = `max_in_value${this.id}`;
+    this.max_in_value.placeholder = "Max in";
+    this.max_in_value.type="number";
+    this.max_in_value.classList.add("min_max");
 
-        document.getElementById('num_id').value=x;
+    this.second_line.appendChild(this.in_address);
+    this.second_line.appendChild(this.min_in_value);
+    this.second_line.appendChild(this.max_in_value);
 
+    this.protocol = document.createElement("select");
+    this.protocol.id = `protocol${x}`
+    this.protocol.classList.add("selector");
+    this.protocol.onchange = () => {this.select_protocol()};
+    let midi = document.createElement("option");
+    let osc = document.createElement("option");
+    midi.innerHTML = "MIDI";
+    osc.innerHTML = "OSC";
+    osc.value = 'osc';
+    midi.value = 'midi';
+    this.protocol.add(midi);
+    this.protocol.add(osc);
 
-        out_address = document.createElement("input");
-        out_address.name = `out_address${x}`;
-        out_address.id = `out_address${x}`;
-        out_address.placeholder = "Output address";
-        out_address.classList.add("entry");
+    document.getElementById('formu').appendChild(this.first_line);
+    document.getElementById('formu').appendChild(this.second_line);
 
-        out_port = document.createElement("input");
-        out_port.name = `out_port${x}`;
-        out_port.id = `out_port${x}`;
-        out_port.placeholder = "Output port";
-        out_port.classList.add("entry");
+    this.first_line.appendChild(this.protocol);
+  }
+  select_protocol()
+  {
+    if(this.protocol.value == 'osc')
+    {
+        this.arg_container = document.createElement("div");
+        this.arg_container.classList.add("container");
 
-        out_ip = document.createElement("input");
-        out_ip.name = `out_ip${x}`;
-        out_ip.id = `out_ip${x}`;
-        out_ip.placeholder = "Output ip";
-        out_ip.classList.add("entry");
+        this.out_address = document.createElement("input");
+        this.out_address.id = `out_address${this.id}`;
+        this.out_address.name = `out_address${this.id}`;
+        this.out_address.placeholder = "Out address";
+        this.out_address.classList.add("out_address");
 
-        window[`cant${x}`] = document.createElement("input");
-        window[`cant${x}`].name = `cant${x}`;
-        window[`cant${x}`].id= `cant${x}`;
-        window[`cant${x}`].type="hidden";
-        window[`cant${x}`].value=0;
+        let add_arg_btn = document.createElement("button");
+        add_arg_btn.type = "button";
+        add_arg_btn.id = `add_arg_btn${this.id}`;
+        add_arg_btn.innerHTML = "agregar";
+        add_arg_btn.onclick = () => {this.add_arg(this.arg_id)};
 
-        window[`argument_div${x}`] = document.createElement("div");
-        window[`argument_div${x}`].classList.add('argument_div');
-        window[`secondline${x}`].appendChild(window[`argument_div${x}`]);
-
-
-
-        window[`add_argument${x}`] = document.createElement("button");
-        window[`add_argument${x}`].type = "button";
-        window[`add_argument${x}`].setAttribute('number',x);
-        window[`add_argument${x}`].setAttribute('cant', 0);
-        window[`add_argument${x}`].classList.add("btn","btn-outline-primary","btn-sm","margin");
-        window[`add_argument${x}`].onclick= function() {
-            a = parseInt(this.getAttribute('cant'));
-            this.setAttribute('cant',a+1);
-
-            document.getElementById(`cant${this.getAttribute('number')}`).value = a+1;
-
-            myFunction5(this.getAttribute('number'),this.getAttribute('cant'));
-        }
-        window[`add_argument${x}`].innerHTML = "Argument +";
-
-///////////////////////////////////////////////////////////////////////////////
-        window[`remove_argument${x}`] = document.createElement("button");
-        window[`remove_argument${x}`].type = "button";
-        window[`remove_argument${x}`].setAttribute('number',x);
-        window[`remove_argument${x}`].classList.add("btn","btn-outline-danger","btn-sm","margin");
-        window[`remove_argument${x}`].onclick= function() {
-
-            cant = parseInt(window[`add_argument${this.getAttribute('number')}`].getAttribute('cant'));
-
-            document.getElementById(`${this.getAttribute('number')}argument${cant}`).remove();
-
-            window[`add_argument${this.getAttribute('number')}`].setAttribute('cant',cant-1)
-
-            document.getElementById(`cant${this.getAttribute('number')}`).value = cant-1;
-        }
-
-        window[`remove_argument${x}`].innerHTML = "-";
-
-
-
-        window[`output_div${x}`] = document.createElement("div");
-        window[`output_div${x}`].classList.add('argument_div');
-        window[`output_div${x}`].appendChild(out_address);
-        window[`output_div${x}`].appendChild(out_ip);
-        window[`output_div${x}`].appendChild(out_port);
-        window[`output_div${x}`].appendChild(window[`add_argument${x}`]);
-        window[`output_div${x}`].appendChild(window[`remove_argument${x}`]);
-        window[`line${x}`].appendChild(window[`cant${x}`]);
-        window[`line${x}`].appendChild(window[`output_div${x}`]);
-
-        flag=0;
-        flag2=1;
+        this.second_line.appendChild(this.out_address);
+        this.first_line.appendChild(add_arg_btn);
     }
+  }
+  add_arg(arg_id)
+  {
+    let box = document.createElement("div");
+    box.classList.add("box");
+    box.id = `${this.id}box${arg_id}`;
+
+    this.arg = document.createElement("input");
+    this.arg.id = `${this.id}arg${arg_id}`;
+    this.arg.name = `${this.id}arg${arg_id}`;
+    this.arg.placeholder = "OSC argument";
+
+    let remove_arg_btn = document.createElement("button");
+    remove_arg_btn.type = "button";
+    remove_arg_btn.innerHTML = "-";
+    remove_arg_btn.id = (`${this.id}remove_arg${arg_id}`);
+    remove_arg_btn.onclick = () => {this.remove_arg(box.id)};
+
+    box.appendChild(this.arg);
+    box.appendChild(remove_arg_btn);
+
+    this.arg_container.appendChild(box);
+    this.second_line.appendChild(this.arg_container);
+
+
+    this.arg_id++;
+    this.arg_qty.value = this.arg_id;
+  }
+
+  remove_arg(box)
+  {
+    document.getElementById(box).remove();
+  }
+
+  autofill(name, out_ip, out_port, in_address, in_min, in_max, out_address)
+  {
+    this.name.value = name;
+    this.out_ip.value = out_ip;
+    this.out_port.value = out_port;
+    this.in_address.value = in_address;
+    this.min_in_value.value = in_min;
+    this.max_in_value.value = in_max;
+    this.protocol.value = 'osc';
+    (() => {this.select_protocol()})();
+    this.out_address.value = out_address;
+    x++;
+  }
+
+  autofill_args(arg_num, arg_value)
+  {
+
+    (() => {this.add_arg(arg_num)})();
+    this.arg.value = arg_value;
+    console.log(this.arg.value);
+  }
+
+}
+function myFunction(){
+    let bind = new Bind(x);
+
+    x++;
+    document.getElementById("bind_qty").value = x;
 }
 
-function myFunction5(x_value,cant){
 
-    osc_argument = document.createElement("input");
-    osc_argument.name = `${x_value}argument${cant}`;
-    osc_argument.id = `${x_value}argument${cant}`;
-    osc_argument.classList.add('argument_entry');
-    osc_argument.placeholder="argument";
-
-
-
-
-    window[`argument_div${x_value}`].appendChild(osc_argument);
-    //window[`secondline${x_value}`].appendChild(osc_argument);
-}
-
-
-
-function autofill(preset_name, listen_ip, listen_port, out_ip, out_port, default_out_ip, default_out_port,
- preset_number, name, in_address, in_min, in_max, out_address){
-
-    myFunction();
-    myFunction3();
-    console.log(preset_number);
-    document.getElementById(`preset_name`).value = preset_name;
-    document.getElementById(`listen_ip`).value = listen_ip;
-    document.getElementById(`listen_port`).value = listen_port;
-    document.getElementById(`out_ip${preset_number}`).value = out_ip;
-    document.getElementById(`out_port${preset_number}`).value = out_port;
-    document.getElementById(`default_out_ip`).value = default_out_ip;
-    document.getElementById(`default_out_port`).value = default_out_port;
-    document.getElementById(`bind_name${preset_number}`).value = name;
-    document.getElementById(`in_address${preset_number}`).value = in_address;
-    document.getElementById(`min_in_value${preset_number}`).value = in_min;
-    document.getElementById(`max_in_value${preset_number}`).value = in_max;
-    document.getElementById(`out_address${preset_number}`).value = out_address;
-
-    document.getElementById(`protocol${preset_number}`).value = "osc";
-
-}
-
-
-function fill_argument(preset_number, argument_number ,msg){
-
-    window[`add_argument${preset_number}`].click();
-    document.getElementById(`${preset_number}argument${argument_number}`).value = msg;
-
-
-}
-/*    document.getElementById('preset_name').value=preset_name;
-    document.getElementById('listen_ip').value=listen_ip;
-    document.getElementById('listen_port').value=listen_port;
-    document.getElementById('out_ip').value=out_ip;
-    document.getElementById('out_port').value=out_port;*/
-
-function removeBind (){
-
-    var r = confirm ("Remove last bind?");
-    if (r == true){
-        window[`line${x}`].remove();
-        window[`secondline${x}`].remove();
-        x -= 1;
-        flag = 0;
-    }
-}
